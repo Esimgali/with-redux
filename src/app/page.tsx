@@ -1,47 +1,67 @@
-import { useAppSelector } from "@/store/hooks";
+'use client';
+import Page from "./test/page";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default function Home() {
-  const users = useAppSelector((state) => state.users.users);
 
+// interface Users {
+//   id: string;
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   dob: string; // Формат: DD.MM.YYYY
+//   gender: string; // Например: "Мужской", "Женский"
+//   position: string;
+//   photo: string; // URL фото
+//   note: string;
+// }
+
+// async function getUsers(){
+//   let users
+//   await axios.post('/api/hello').then((res)=>{
+//     users = res.data.message
+//     console.log(res.data.message);
+//   })
+//   return users;
+// }
+
+const Home = () => {
+  const [users, setUsers] = useState()
+  const [sexFil, setSex] = useState("male")
+  const handleSex = (event: React.ChangeEvent<HTMLSelectElement>) =>{
+    setSex(event.target.value)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.post('/api/hello', { params: { male: sexFil } });
+        console.log(res.data);
+        setUsers(res.data.message);
+      } catch (error) {
+        console.error('Ошибка при загрузке данных:', error);
+      }
+    };
+
+    fetchData();
+  }, [sexFil]);
 
   return (
     <div >
       <header>
-        Esimgali Kha
+        Esimgali Khamitov
+        <div className="container flex w-full border-collapse border border-gray-300 p-5">
+          <div className="border-collapse border border-gray-300">
+            <select value={sexFil} onChange={handleSex}>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
       </header>
       <main >
       <div className="container mx-auto mt-8">
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">Имя</th>
-            <th className="border border-gray-300 px-4 py-2">Фамилия</th>
-            <th className="border border-gray-300 px-4 py-2">Email</th>
-            <th className="border border-gray-300 px-4 py-2">Дата рождения</th>
-            <th className="border border-gray-300 px-4 py-2">Пол</th>
-            <th className="border border-gray-300 px-4 py-2">Должность</th>
-            <th className="border border-gray-300 px-4 py-2">Фото</th>
-            <th className="border border-gray-300 px-4 py-2">Примечание</th>
-          </tr>
-        </thead>
-        <tbody>
-        {users.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100">
-              <td className="border border-gray-300 px-4 py-2">{user.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.email}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.dob}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.gender}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.position}</td>
-              <td className="border border-gray-300 px-4 py-2">
-                <img src={user.photo} alt="Фото" className="w-16 h-16 object-cover" />
-              </td>
-              <td className="border border-gray-300 px-4 py-2">{user.note}</td>
-            </tr>))}
-        </tbody>
-      </table>
+        {users ? <Page users={users}></Page> : <div></div>}        
     </div>
       </main>
       <footer >
@@ -50,3 +70,4 @@ export default function Home() {
     </div>
   );
 }
+export default Home;

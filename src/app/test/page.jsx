@@ -2,21 +2,21 @@
 import { useAppSelector } from "@/store/hooks";
 import Page from "../components/page"
 
-export default function Home() {
-  const users = useAppSelector((state) => state.users.users);
-  console.log(users);
-  
-
+const Home = (props)=> {
+  const users = props.users
+  const toDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // В JavaScript месяц начинается с 0
+    const year = date.getFullYear();
+    const formattedDate = `${day}.${month}.${year}`;
+    return formattedDate
+  }
   return (
     <div >
       <header>
-        Esimgali Kha
-        <Page></Page>
       </header>
       <main >
-         {users.map((user) => (
-          <div key={user.id}>{user.lastName}</div>
-         ))}
       <div className="container mx-auto mt-8">
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
@@ -39,7 +39,7 @@ export default function Home() {
               <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>
               <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
               <td className="border border-gray-300 px-4 py-2">{user.email}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.dob}</td>
+              <td className="border border-gray-300 px-4 py-2">{toDate(user.dob)}</td>
               <td className="border border-gray-300 px-4 py-2">{user.gender}</td>
               <td className="border border-gray-300 px-4 py-2">{user.position}</td>
               <td className="border border-gray-300 px-4 py-2">
@@ -57,3 +57,4 @@ export default function Home() {
     </div>
   );
 }
+export default Home;
