@@ -117,19 +117,58 @@ export default function handler(req, res) {
     },
   ];
 
-  if(filters.male){
+  if(filters.male !== "all"){
     users = users.filter(user => user.gender == filters.male)
   }
-  if (filters.date) {
-    const startDate = filters.date[0]
-    const endDate = filters.date[1]
-    users = users.filter(user => startDate >= users.dob && endDate <= user.dob)
+  if (filters.date && filters.date[0] !== "" && filters.date[1] !== "") {
+    const startDate = Number(filters.date[0])
+    const endDate = Number(filters.date[1])
+    console.log(startDate, endDate);
+    
+    users = users.filter(user => startDate <= user.dob && endDate >= user.dob)
   }
-  if(filters.sortName){
-    users = users.sort((a, b) => a.firstName > b.firstName)
-  }else{
-    users = users.sort((a, b) => a.firstName < b.firstName)
+  if(filters.column !== "lastname"){
+    if(filters.sort !== "byorder"){
+      users = users.sort((a, b) => {// Сортировка в обратном порядке
+      if (a.firstName < b.firstName) return 1; 
+      if (a.firstName > b.firstName) return -1;
+        return 0;
+      })
+    }else{
+      users = users.sort((a, b) => {// Сортировка в алфавитном порядке
+        if (a.firstName < b.firstName) return -1; 
+        if (a.firstName > b.firstName) return 1;
+        return 0;
+      })
+    }
+  }else if(filters.column == "lastname"){
+    if(filters.sort !== "byorder"){
+      users = users.sort((a, b) => {// Сортировка в обратном порядке
+      if (a.lastName < b.lastName) return 1; 
+      if (a.lastName > b.lastName) return -1;
+        return 0;
+      })
+    }else{
+      users = users.sort((a, b) => {// Сортировка в алфавитном порядке
+        if (a.lastName < b.lastName) return -1; 
+        if (a.lastName > b.lastName) return 1;
+        return 0;
+      })
+    }
   }
+  // if(filters.sortName !== "byorder"){
+  //   users = users.sort((a, b) => {// Сортировка в обратном порядке
+  //     if (a.firstName < b.firstName) return 1; 
+  //     if (a.firstName > b.firstName) return -1;
+  //     return 0;
+  //   })
+  // }else{
+  //   users = users.sort((a, b) => {// Сортировка в алфавитном порядке
+  //     if (a.firstName < b.firstName) return -1; 
+  //     if (a.firstName > b.firstName) return 1;
+  //     return 0;
+  //   })
+  // }
   res.status(200).json({ message: users });
   }
   

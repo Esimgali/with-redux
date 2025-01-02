@@ -1,9 +1,27 @@
 'use client';
-import { useAppSelector } from "@/store/hooks";
-import Page from "../components/page"
+import { useEffect, useState } from "react";
 
 const Home = (props)=> {
   const users = props.users
+  const [sort, setSort] = useState({
+    "column":"lastname",
+    "sort" : "byorder"
+  })
+  const sortNameHandler = async (event) =>{
+    setSort({
+      "column":"name",
+      "sort" : event.target.value
+    })
+  }
+  const sortLastNameHandler = async (event) =>{
+    setSort({
+      "column":"lastname",
+      "sort" : event.target.value
+    })
+  }
+  useEffect(() => {
+    props.onChange(sort);
+  }, [sort]);
   const toDate = (timestamp) => {
     const date = new Date(timestamp);
     const day = String(date.getDate()).padStart(2, '0');
@@ -12,6 +30,7 @@ const Home = (props)=> {
     const formattedDate = `${day}.${month}.${year}`;
     return formattedDate
   }
+ 
   return (
     <div >
       <header>
@@ -22,8 +41,26 @@ const Home = (props)=> {
         <thead>
           <tr className="bg-gray-200">
             <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">Имя</th>
-            <th className="border border-gray-300 px-4 py-2">Фамилия</th>
+            <th className="border border-gray-300 px-4 py-2">
+              Фамилия
+              <div>
+                  <select value={sort.lastName} onChange={sortLastNameHandler}>
+                    <option value="byorder">По алфавиту</option>
+                    <option value="against">Против алфавита</option>
+                  </select>
+                </div>
+            </th>
+            <th className="border border-gray-300 px-4 py-2">
+              <div className="flex">
+                Имя
+                <div>
+                  <select value={sort.name} onChange={sortNameHandler}>
+                    <option value="byorder">По алфавиту</option>
+                    <option value="against">Против алфавита</option>
+                  </select>
+                </div>
+              </div>
+            </th>
             <th className="border border-gray-300 px-4 py-2">Email</th>
             <th className="border border-gray-300 px-4 py-2">Дата рождения</th>
             <th className="border border-gray-300 px-4 py-2">Пол</th>
@@ -36,8 +73,8 @@ const Home = (props)=> {
         {users.map((user) => (
             <tr key={user.id} className="hover:bg-gray-100">
               <td className="border border-gray-300 px-4 py-2">{user.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>
               <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
+              <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>
               <td className="border border-gray-300 px-4 py-2">{user.email}</td>
               <td className="border border-gray-300 px-4 py-2">{toDate(user.dob)}</td>
               <td className="border border-gray-300 px-4 py-2">{user.gender}</td>
