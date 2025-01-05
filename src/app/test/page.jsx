@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from "react";
-import Modal from "./modal";
 
 const Home = (props)=> {
   const users = props.users
@@ -37,13 +36,7 @@ const Home = (props)=> {
       "sort" : value
     })
   }
-
-  const handleButton = (event) =>{
-    console.log(event.currentTarget.children[0].getAttribute('values'));
-  }
   useEffect(() => {
-    console.log(sort);
-    
     props.onChange(sort);
   }, [sort]);
   const toDate = (timestamp) => {
@@ -55,9 +48,9 @@ const Home = (props)=> {
     return formattedDate
   }
 
-  const handleRow = (event) => {
-    console.log(event.target);
-    
+  const handleRowClick = (event) => {
+    const id = event.currentTarget.children[0].innerText
+    props.chooseClient(id)
   }
  
   return (
@@ -66,7 +59,6 @@ const Home = (props)=> {
       </header>
       <main >
       <div className="container mx-auto mt-8">
-        <button onClick={props.chooseClient}>Show user info</button>
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
@@ -128,7 +120,7 @@ const Home = (props)=> {
         </thead>
         <tbody>
         {users.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100">
+            <tr key={user.id} onClick={handleRowClick} className="hover:bg-gray-100">
               <td className="border border-gray-300 px-4 py-2">{user.id}</td>
               <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
               <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>

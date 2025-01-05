@@ -14,6 +14,7 @@
     padding: 30px;
     background-color: rgb(255, 255, 255);
     border-radius: 15px;
+    position: relative;
 }
 
 .MyModal_active{

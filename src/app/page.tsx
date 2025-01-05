@@ -14,7 +14,7 @@ const Home = () => {
     "end": ""
   })
   const [userInfo, setUserInfo] = useState({})
-  const [isModal, setModal] = useState(true)
+  const [isModal, setModal] = useState(false)
 
   const handleSex = (event: React.ChangeEvent<HTMLSelectElement>) =>{
     setFilters((prevFilters) => ({
@@ -76,23 +76,10 @@ const Home = () => {
   };
 
   const chooseClient = (id : number) =>{
-    // axios.get('/api/getUser', {params: {id : id}}).then((res)=>{
-    //   console.log(res.data);
-    // })
-    
-    const data = {
-      "id": '10',
-      firstName: 'Ольга',
-      lastName: 'Николаева',
-      email: 'olga.nikolaeva@example.com',
-      dob: 471859200000, // 13.12.1984
-      gender: 'female',
-      position: 'Координатор проектов',
-      photo: 'https://via.placeholder.com/150',
-      note: 'Организованная и ответственная',
-    }
-    setUserInfo(data)
-    setModal(true)
+    axios.get('/api/getUser', {params: {id : id}}).then((res)=>{
+      setUserInfo(res.data.users[0])
+      setModal(true)
+    })
   }
   return (
     <div >
