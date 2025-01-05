@@ -127,7 +127,7 @@ export default function handler(req, res) {
     
     users = users.filter(user => startDate <= user.dob && endDate >= user.dob)
   }
-  if(filters.column !== "lastname"){
+  if(filters.column == "name"){
     if(filters.sort !== "byorder"){
       users = users.sort((a, b) => {// Сортировка в обратном порядке
       if (a.firstName < b.firstName) return 1; 
@@ -152,6 +152,20 @@ export default function handler(req, res) {
       users = users.sort((a, b) => {// Сортировка в алфавитном порядке
         if (a.lastName < b.lastName) return -1; 
         if (a.lastName > b.lastName) return 1;
+        return 0;
+      })
+    }
+  }else{
+    if(filters.sort !== "increase"){
+      users = users.sort((a, b) => {// Сортировка по убыванию
+      if (a.dob < b.dob) return 1; 
+      if (a.dob > b.dob) return -1;
+        return 0;
+      })
+    }else{
+      users = users.sort((a, b) => {// Сортировка по возростанию
+        if (a.dob < b.dob) return -1; 
+        if (a.dob > b.dob) return 1;
         return 0;
       })
     }

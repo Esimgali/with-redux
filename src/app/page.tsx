@@ -2,28 +2,7 @@
 import Page from "./test/page";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-
-// interface Users {
-//   id: string;
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   dob: string; // Формат: DD.MM.YYYY
-//   gender: string; // Например: "Мужской", "Женский"
-//   position: string;
-//   photo: string; // URL фото
-//   note: string;
-// }
-
-// async function getUsers(){
-//   let users
-//   await axios.post('/api/hello').then((res)=>{
-//     users = res.data.message
-//     console.log(res.data.message);
-//   })
-//   return users;
-// }
+import Modal from "./test/modal";
 
 const Home = () => {
   const [users, setUsers] = useState()
@@ -34,6 +13,9 @@ const Home = () => {
     "start": "",
     "end": ""
   })
+  const [userInfo, setUserInfo] = useState({})
+  const [isModal, setModal] = useState(true)
+
   const handleSex = (event: React.ChangeEvent<HTMLSelectElement>) =>{
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -92,10 +74,29 @@ const Home = () => {
       [name]: value,
     }));
   };
+
+  const chooseClient = (id : number) =>{
+    // axios.get('/api/getUser', {params: {id : id}}).then((res)=>{
+    //   console.log(res.data);
+    // })
+    
+    const data = {
+      "id": '10',
+      firstName: 'Ольга',
+      lastName: 'Николаева',
+      email: 'olga.nikolaeva@example.com',
+      dob: 471859200000, // 13.12.1984
+      gender: 'female',
+      position: 'Координатор проектов',
+      photo: 'https://via.placeholder.com/150',
+      note: 'Организованная и ответственная',
+    }
+    setUserInfo(data)
+    setModal(true)
+  }
   return (
     <div >
       <header>
-        Esimgali Khamitov
         <div className="container flex w-full border-collapse border border-gray-300 p-5">
           <div >
             <select className="border-collapse border border-gray-300" value={filters.male} onChange={handleSex}>
@@ -128,8 +129,9 @@ const Home = () => {
         </div>
       </header>
       <main >
+      <Modal isModal={isModal} setModal={setModal} userInfo={userInfo}></Modal>
       <div className="container mx-auto mt-8">
-        {users ? <Page onChange={handleSort} users={users}></Page> : <div></div>}        
+        {users ? <Page chooseClient={chooseClient} onChange={handleSort} users={users}></Page> : <div></div>}        
     </div>
       </main>
       <footer >
