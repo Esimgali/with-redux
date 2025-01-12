@@ -3,11 +3,16 @@ import Page from "./test/page";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Modal from "./test/modal";
+import Pagination from "./components/pagination"
 
 const Home = () => {
   const [users, setUsers] = useState()
+  const [page, setPage] = useState(1)
+  const [count, setCount] = useState(1)
   const [filters, setFilters] = useState({
-    "male": "all"
+    "male": "all",
+    "splitter": 10,
+    "page": page
   })
   const [date, setDate] = useState({
     "start": "",
@@ -26,11 +31,13 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(process.env.REACT_APP_BACKEND_URL);
-        
         const res = await axios.get(`http://localhost:5000/users`, { params: filters });
         console.log(res.data);
-        setUsers(res.data);
+        setUsers(res.data.users);
+        setCount(res.data.count);
+        setPage(res.data.page);
+        console.log("Count:", count, "page:", page);
+        
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
       }
@@ -83,6 +90,12 @@ const Home = () => {
       setModal(true)
     })
   }
+  const changePage = (page: number) =>{
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      "page": page,
+    }))
+  }
   return (
     <div >
       <header>
@@ -123,8 +136,8 @@ const Home = () => {
         {users ? <Page chooseClient={chooseClient} onChange={handleSort} users={users}></Page> : <div></div>}        
     </div>
       </main>
-      <footer >
-        
+      <footer className="my-5 flex justify-center">
+        <Pagination onChange={changePage} page={page} count={count}></Pagination>
       </footer>
     </div>
   );

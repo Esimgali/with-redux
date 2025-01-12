@@ -138,6 +138,7 @@ const Home = (props)=> {
     </div>
       </main>
       <footer >
+        
       </footer>
     </div>
   );
