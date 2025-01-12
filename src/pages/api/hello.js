@@ -1,5 +1,5 @@
 // src/pages/api/hello.js
-
+// XpdQhTa0Nx4MlMHC
 export default function handler(req, res) {
   let filters = req.body.params
   console.log(filters);
@@ -170,19 +170,6 @@ export default function handler(req, res) {
       })
     }
   }
-  // if(filters.sortName !== "byorder"){
-  //   users = users.sort((a, b) => {// Сортировка в обратном порядке
-  //     if (a.firstName < b.firstName) return 1; 
-  //     if (a.firstName > b.firstName) return -1;
-  //     return 0;
-  //   })
-  // }else{
-  //   users = users.sort((a, b) => {// Сортировка в алфавитном порядке
-  //     if (a.firstName < b.firstName) return -1; 
-  //     if (a.firstName > b.firstName) return 1;
-  //     return 0;
-  //   })
-  // }
   res.status(200).json({ message: users });
   }
   

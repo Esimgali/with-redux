@@ -1,4 +1,4 @@
-export const renameIds = async (ids) => {
+export const renameIds = async () => {
     try {
       const response = await axios.get(endpoint);
       return response.data;
