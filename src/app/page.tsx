@@ -26,9 +26,11 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.post('/api/hello', { params: filters });
+        console.log(process.env.REACT_APP_BACKEND_URL);
+        
+        const res = await axios.get(`http://localhost:5000/users`, { params: filters });
         console.log(res.data);
-        setUsers(res.data.message);
+        setUsers(res.data);
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
       }
@@ -76,8 +78,8 @@ const Home = () => {
   };
 
   const chooseClient = (id : number) =>{
-    axios.get('/api/getUser', {params: {id : id}}).then((res)=>{
-      setUserInfo(res.data.users[0])
+    axios.get(`http://localhost:5000/users/${id}`).then((res)=>{
+      setUserInfo(res.data[0])
       setModal(true)
     })
   }
