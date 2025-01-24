@@ -18,6 +18,7 @@ const Home = () => {
     "start": "",
     "end": ""
   })
+  const [isFilled, setIsFilled] = useState(false)
   const [userInfo, setUserInfo] = useState({})
   const [isModal, setModal] = useState(false)
 
@@ -36,8 +37,6 @@ const Home = () => {
         setUsers(res.data.users);
         setCount(res.data.count);
         setPage(res.data.page);
-        console.log("Count:", count, "page:", page);
-        
       } catch (error) {
         console.error('Ошибка при загрузке данных:', error);
       }
@@ -96,10 +95,19 @@ const Home = () => {
       "page": page,
     }))
   }
+
+  const cleanDateInput = () => {
+    setDate({"start": "","end": ""})
+    setIsFilled(false)
+  }
+
+  useEffect(()=>{
+    setIsFilled(date.start !== "" || date.end !== "")
+  }, [date])
   return (
     <div >
       <header>
-        <div className="container flex w-full border-collapse border border-gray-300 p-5">
+        <div className="container flex align-center justify-center w-full p-5">
           <div >
             <select className="border-collapse border border-gray-300" value={filters.male} onChange={handleSex}>
               <option value="all">Все</option>
@@ -107,38 +115,34 @@ const Home = () => {
               <option value="female">Female</option>
             </select>
           </div>
-          {/* <div className="ml-5 p-2 border-collapse border border-gray-300">
-            <p>Сортировка по дате</p>
-            <div className="p-2">
-              <input value={date.start} className="border-collapse border border-gray-300" type="date"></input>
-              <input value={date.end} className="border-collapse border border-gray-300" type="date"></input>
-            </div>
-            <div className="flex justify-end">
-            </div>
-          </div> */}
-          <div className="ml-5 p-2 border-collapse border border-gray-300">
-            <p>Сортировка по дате</p>
-            <form className="p-2 flex flex-col" onSubmit={handleDate}>
-              <div className="py-2">
-                <input name="start" value={date.start} onChange={handleInputChange} className="mr-2 border-collapse border border-gray-300" type="date"></input>
-                <input name="end" value={date.end} onChange={handleInputChange} className="border-collapse border border-gray-300" type="date"></input>
+          <div className="ml-5">
+            <form className=" flex flex-col" onSubmit={handleDate}>
+              <div className="pb-2">
+                <input name="start" value={date.start} onChange={handleInputChange} className={"mr-2 border-collapse border border-gray-300 rounded-md " +  (date.start !== "" ? "text-dark":"text-gray-500")} type="date"></input>
+                <input name="end" value={date.end} onChange={handleInputChange} className={"border-collapse border border-gray-30 rounded-md " +  (date.end !== "" ? "text-dark":"text-gray-500")} type="date"></input>
               </div>
-              <div className="flex justify-end">
-                <button type="submit" className="p-1 text-sm border-collapse border border-gray-300  hover:bg-gray-100">Применить фильтр</button>
+              <div className={isFilled ? "flex justify-between": "flex justify-end"}>
+                <button type="button" onClick={cleanDateInput} className={isFilled ? "p-1 text-sm border-collapse border border-red-300 bg-red-200 hover:bg-red-100": "hidden"}>Очистить</button>
+                <button type="submit" className="p-1 text-sm border-collapse border border-green-300 bg-green-200  hover:bg-green-100">Применить фильтр</button>
               </div>
             </form>
           </div>
         </div>
       </header>
-      <main >
-      <Modal isModal={isModal} setModal={setModal} userInfo={userInfo}></Modal>
-      <div className="container mx-auto mt-8">
-        {users ? <Page chooseClient={chooseClient} onChange={handleSort} users={users}></Page> : <div></div>}        
-    </div>
-      </main>
-      <footer className="my-5 flex justify-center">
-        <Pagination onChange={changePage} page={page} count={count}></Pagination>
-      </footer>
+      {users ?
+        <div>
+          <main >
+            <Modal isModal={isModal} setModal={setModal} userInfo={userInfo}></Modal>
+            <div className="container mx-auto mt-8">
+              <Page chooseClient={chooseClient} onChange={handleSort} users={users}></Page>        
+            </div>
+          </main>
+          <footer className="my-5 flex justify-center">
+            <Pagination onChange={changePage} page={page} count={count}></Pagination>
+          </footer>
+        </div>
+         :<div className="flex justify-center">Loading...</div>}
+      
     </div>
   );
 }

@@ -59,11 +59,11 @@ const Home = (props)=> {
       </header>
       <main >
       <div className="container mx-auto mt-8">
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
+      <table className="min-w-full table-auto">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">
+          <tr className="bg-gray-100">
+            <th className=" px-4 py-2">ID</th>
+            <th className=" px-4 py-2">
               <div className="flex">
                 Фамилия
                 <button name="lastname" className={sort.column == 'lastname' ? "text-gray-800" : "text-gray-400"} onClick={sortHandler}>
@@ -79,7 +79,7 @@ const Home = (props)=> {
                 </button>
               </div>
             </th>
-            <th className="border border-gray-300 px-4 py-2">
+            <th className=" px-4 py-2">
               <div className="flex">
                 Имя
                 <button name="name" className={sort.column == 'name' ? "text-gray-800" : "text-gray-400"} onClick={sortHandler}>
@@ -95,8 +95,8 @@ const Home = (props)=> {
               </button>
               </div>
             </th>
-            <th className="border border-gray-300 px-4 py-2">Email</th>
-            <th className="border border-gray-300 px-4 py-2">
+            <th className=" px-4 py-2">Email</th>
+            <th className=" px-4 py-2">
               <div className="flex">
                 <div className="container">Дата рождения</div>
                 <button name="date" className={sort.column == 'date' ? "text-gray-800" : "text-gray-400"} onClick={sortHandler}>
@@ -112,22 +112,22 @@ const Home = (props)=> {
                 </button>
               </div>
             </th>
-            <th className="border border-gray-300 px-4 py-2">Пол</th>
-            <th className="border border-gray-300 px-4 py-2">Должность</th>
+            <th className=" px-4 py-2">Пол</th>
+            <th className=" px-4 py-2">Должность</th>
             {/* <th className="border border-gray-300 px-4 py-2">Фото</th>
             <th className="border border-gray-300 px-4 py-2">Примечание</th> */}
           </tr>
         </thead>
         <tbody>
         {users.map((user) => (
-            <tr key={user.id} onClick={handleRowClick} className="hover:bg-gray-100">
-              <td className="border border-gray-300 px-4 py-2">{user.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.email}</td>
-              <td className="border border-gray-300 px-4 py-2">{toDate(user.dob)}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.gender}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.position}</td>
+            <tr key={user.id} onClick={handleRowClick} className="border-b border-gray-300 hover:bg-gray-100">
+              <td className=" px-4 py-2">{user.id}</td>
+              <td className=" px-4 py-2">{user.lastName}</td>
+              <td className=" px-4 py-2">{user.firstName}</td>
+              <td className=" px-4 py-2">{user.email}</td>
+              <td className=" px-4 py-2">{toDate(user.dob)}</td>
+              <td className=" px-4 py-2">{user.gender}</td>
+              <td className=" px-4 py-2">{user.position}</td>
               {/* <td className="border border-gray-300 px-4 py-2">
                 <img src={user.photo} alt="Фото" className="w-16 h-16 object-cover" />
               </td>
